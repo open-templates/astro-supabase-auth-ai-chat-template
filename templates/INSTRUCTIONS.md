@@ -1,20 +1,34 @@
-# Instructions — repo-display-name
+# Agent & developer instructions — repo-name
 
-Guide for maintainers and coding agents working on **owner-username/repo-name**.
+Use this file when turning this template into a **production SPA** with Supabase Auth and a Cloudflare Worker backend. Pairs with [paired-repo-name](https://github.com/owner-username/paired-repo-name) as the demo backend.
 
-## First steps
+## What ships out of the box
 
-1. Customize [README.md](README.md) for your stack.
-2. Edit [`.github/dependabot.yml`](.github/dependabot.yml) (ecosystem, directory).
-3. Never commit secrets; use `.env.example` only.
-4. Batch [CHANGELOG.md](CHANGELOG.md) updates per release (conventional commits).
+| Feature | Description |
+|---------|-------------|
+| Google OAuth | Sign in / sign up via Supabase |
+| Email auth | Login, signup, password recovery & reset |
+| API health indicator | Header polls `GET /health` |
+| Protected home | Calls `GET /me` with JWT |
 
-## CHANGELOG workflow
+Details: [`index.md`](index.md)
 
-Use `feat:`, `fix:`, `docs:` prefixes. Group changes per release — see [Keep a Changelog](https://keepachangelog.com/).
+## Prerequisites
 
----
+1. Supabase project — see [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md)
+2. Cloudflare Worker API — deploy or run [paired-repo-name](https://github.com/owner-username/paired-repo-name) locally on port `8787`
+3. Copy `.env.example` → `.env.local` and set `VITE_*` variables
 
-## Repository documents
+## Local development
 
-[README](README.md) | **INSTRUCTIONS** | [CHANGELOG](CHANGELOG.md) | [CONTRIBUTING](CONTRIBUTING.md) | [SECURITY](SECURITY.md) | [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
+```bash
+bun install
+cp .env.example .env.local
+bun run dev
+```
+
+## Extension guidance
+
+- Add routes under `src/pages/` and register in `src/main.tsx`
+- API client: `src/api/`
+- Auth flows: `src/auth/`

@@ -1,9 +1,15 @@
 ---
 type: Feature
 title: Purpose
-description: Minimal GitHub repo template with community docs and automation, no app code.
-tags: [github, template]
+description: Supabase-authenticated Astro + Vue SPA with built-in AI chat calling a paired worker.
+tags: [frontend, ai, chat, supabase]
 timestamp: 2026-07-15T00:00:00Z
 ---
 
-Community docs, Dependabot, CODEOWNERS, and issue/PR scaffolding from [@open-templates](https://github.com/open-templates). Application code is added by adopters after init.
+# Purpose
+
+Astro serves a single page; the **Vue 3** SPA (`vue-router`) handles auth routes and chat UI.
+
+Browser holds the Supabase session; the Cloudflare Worker validates JWTs and runs chat completions server-side.
+
+Pairs with [cf-hono-supabase-gemini-api-template](https://github.com/open-templates/cf-hono-supabase-gemini-api-template).

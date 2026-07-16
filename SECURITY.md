@@ -1,58 +1,97 @@
 # Security Policy
 
-## Supported versions
+## Supported Versions
+
+We actively support the following versions with security updates:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| latest  | :white_check_mark: |
-| older   | :x:                |
+| 0.1.x   | :white_check_mark: |
+| < 0.1   | :x:                |
 
-Update this table when you publish releases.
+## Reporting a Vulnerability
 
-## Reporting a vulnerability
+We take security seriously and appreciate your efforts to responsibly disclose security vulnerabilities.
+
+### How to Report
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Report them via:
+Instead, please report security vulnerabilities by:
 
-1. **GitHub Security Advisory** — private vulnerability reporting on the repository
-2. **Direct contact** — [@open-templates](https://github.com/open-templates)
+1. **GitHub Security Advisory**: Use GitHub's private vulnerability reporting feature
+2. **Direct Message**: Contact the maintainer directly via GitHub
 
-### What to include
+### What to Include
 
-- Clear description of the issue
-- Impact if exploited
-- Steps to reproduce
-- Affected versions and environment
-- Minimal proof-of-concept if applicable
+When reporting a vulnerability, please include:
 
-### Response timeline (targets)
+- **Description**: A clear description of the vulnerability
+- **Impact**: What could happen if this vulnerability is exploited
+- **Reproduction**: Step-by-step instructions to reproduce the issue
+- **Environment**: Node.js version, Bun version, and operating system
+- **Code Sample**: Minimal reproducible example (if applicable)
 
-- **Initial response:** 48 hours
-- **Status update:** 7 days
-- **Resolution:** 30 days for confirmed issues
+### Response Timeline
 
-## Security practices for adopters
+We aim to respond to security reports within:
 
-When you build on this template:
+- **Initial Response**: 48 hours
+- **Status Update**: 7 days
+- **Resolution**: 30 days (for confirmed vulnerabilities)
 
-1. **Secrets** — Never commit `.env`, keys, or credentials; use `.env.example` only.
-2. **Dependencies** — Keep Dependabot enabled and review update PRs.
-3. **Automation** — Restrict who can change `.github/workflows/` (CODEOWNERS helps).
-4. **Errors** — Do not expose stack traces or secrets in user-facing output.
+### Security Considerations for Users
 
-## Scope
+When running Krill Bill locally or in cloud environments:
 
-This policy applies to code and configuration **in this repository** once you add application logic. It does not cover third-party services you integrate later.
+#### General Security Best Practices
 
-## Recognition
+1. **Dependency Management**:
 
-With your permission, we may credit reporters in security advisories or [CHANGELOG.md](CHANGELOG.md).
+   ```bash
+  # Keep dependencies updated
+  bun update
+  bun audit
+   ```
 
-Thank you for helping keep this project and its users safe.
+2. **Input Validation**:
 
----
+   Validate all user-provided invoice and client data at trust boundaries.
 
-## Repository documents
+3. **Error Handling**:
 
-[README](README.md) | [INSTRUCTIONS](INSTRUCTIONS.md) | [CHANGELOG](CHANGELOG.md) | [CONTRIBUTING](CONTRIBUTING.md) | **SECURITY** | [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
+   Avoid exposing internal stack traces or secrets in client-visible errors.
+
+#### Common Security Pitfalls
+
+- **Input Sanitization**: Sanitize all text fields before rendering or storing.
+- **Dependency Vulnerabilities**: Regularly audit and update dependencies.
+- **Error Information Disclosure**: Avoid leaking internals in UI and logs.
+- **Resource Limits**: Enforce safe limits for file uploads and payload sizes.
+
+#### Dependencies
+
+Dependencies are intentionally kept minimal to reduce attack surface.
+
+### Scope
+
+This security policy covers:
+
+- React App Template web application code
+- Build and deployment workflows
+- Public documentation and configuration
+
+This policy does not cover:
+
+- Third-party services and infrastructure outside this repository
+- Security issues in upstream dependencies (report to the respective maintainers)
+
+### Recognition
+
+We appreciate security researchers and will acknowledge your contribution (with permission) in:
+
+- Security advisory credits
+- CHANGELOG.md mentions
+- Hall of fame (if we create one)
+
+Thank you for helping keep Krill Bill and its community safe.

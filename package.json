@@ -1,0 +1,75 @@
+{
+  "name": "astro-supabase-auth-ai-chat-template",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Astro 7 + Vue + Supabase Auth SPA with an AI chat page. Pairs with cf-hono-supabase-gemini-api-template.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "init": "node scripts/init-from-template.mjs",
+    "build": "astro build",
+    "ci": "astro check && astro build",
+    "preview": "astro preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "astro check",
+    "format": "prettier --write \"**/*.{ts,vue,js,json,md,css,html,yml,yaml,mjs}\"",
+    "format:check": "prettier --check \"**/*.{ts,vue,js,json,md,css,html,yml,yaml,mjs}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-templates/astro-supabase-auth-ai-chat-template.git"
+  },
+  "homepage": "https://github.com/open-templates/astro-supabase-auth-ai-chat-template#readme",
+  "bugs": {
+    "url": "https://github.com/open-templates/astro-supabase-auth-ai-chat-template/issues"
+  },
+  "keywords": [
+    "astro-supabase-auth-ai-chat-template",
+    "supabase",
+    "oauth",
+    "google",
+    "astro",
+    "vue",
+    "cloudflare-pages",
+    "bun"
+  ],
+  "author": {
+    "name": "@xarlizard",
+    "email": "38315638+xarlizard@users.noreply.github.com",
+    "url": "https://github.com/xarlizard"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "bun@1.2.15",
+  "dependencies": {
+    "@iconify/vue": "^5.0.0",
+    "@supabase/supabase-js": "^2.110.0",
+    "astro": "^7.1.0",
+    "clsx": "^2.1.1",
+    "dompurify": "^3.2.6",
+    "lucide-vue-next": "^0.562.0",
+    "marked": "^15.0.12",
+    "tailwind-merge": "^3.5.0",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4",
+    "vue-sonner": "^2.0.9"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/vue": "^7.0.1",
+    "@eslint/js": "^9.39.2",
+    "@tailwindcss/vite": "^4.3.2",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-vue": "^10.6.2",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.2"
+  }
+}

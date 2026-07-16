@@ -47,7 +47,7 @@ via an official social media account, or acting as an appointed representative a
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible
 for enforcement through GitHub's private vulnerability reporting feature, or by contacting
-[@open-templates](https://github.com/open-templates) directly. All complaints will be reviewed and investigated promptly and
+[@xarlizard](https://github.com/xarlizard) directly. All complaints will be reviewed and investigated promptly and
 fairly.
 
 All community leaders are obligated to respect the privacy and security of the reporter of any incident.
@@ -101,9 +101,3 @@ Community Impact Guidelines were inspired by
 
 For answers to common questions about this code of conduct, see the FAQ at https://www.contributor-covenant.org/faq.
 Translations are available at https://www.contributor-covenant.org/translations.
-
----
-
-## Repository documents
-
-[README](README.md) | [INSTRUCTIONS](INSTRUCTIONS.md) | [CHANGELOG](CHANGELOG.md) | [CONTRIBUTING](CONTRIBUTING.md) | [SECURITY](SECURITY.md) | **CODE_OF_CONDUCT**

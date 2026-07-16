@@ -1,48 +1,49 @@
-# Contributing
+# Contributing to Template
 
-Thanks for helping improve this project.
+Thanks for helping improve Template.
 
 ## Code of Conduct
 
-Participation means agreeing to [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+Participation in this project means agreeing to the rules in `CODE_OF_CONDUCT.md`.
 
-## Local setup
+## Local Setup
 
 ```bash
-git clone https://github.com/open-templates/github-repo-template.git
-cd github-repo-template
+git clone https://github.com/open-templates/astro-supabase-auth-ai-chat-template.git
+cd astro-supabase-auth-ai-chat-template
+bun install
+bun run dev
 ```
 
-Add stack-specific setup steps here once the project grows beyond the empty template.
+## What to Work On
 
-## What to work on
+- Invoice creation/editing flows
+- Billing automation and mail dispatch
+- Local-first persistence model
+- UX improvements for dashboard and forms
 
-- Start from the template and open focused PRs
-- Prefer one feature or fix per PR for clearer CHANGELOG batches
+## Pull Requests
 
-## Pull requests
+1. Create a branch from `main`.
+2. Keep changes focused and small.
+3. Run checks before opening PR:
 
-1. Branch from `main`.
-2. Keep changes small and focused.
-3. Run any checks you add (this template ships without CI workflows).
-4. Open a PR using the repository pull request template.
+```bash
+bun run lint
+bun run typecheck
+bun run build
+```
 
-## Commit style
+4. Open PR with a clear description and link related issues.
 
-[Conventional commits](https://www.conventionalcommits.org/) are preferred so releases can be batched into [CHANGELOG.md](CHANGELOG.md):
+## Commit Style
 
-- `feat: add user profile endpoint`
-- `fix: handle missing env variable`
-- `docs: update setup section`
+Conventional commits are preferred, for example:
 
-See [INSTRUCTIONS.md](INSTRUCTIONS.md) for feature-based CHANGELOG workflow.
+- `feat: add invoice draft save flow`
+- `fix: handle empty customer email`
+- `docs: update local setup section`
 
 ## License
 
-By contributing, you agree your changes are licensed under MIT (see [LICENSE](LICENSE)).
-
----
-
-## Repository documents
-
-[README](README.md) | [INSTRUCTIONS](INSTRUCTIONS.md) | [CHANGELOG](CHANGELOG.md) | **CONTRIBUTING** | [SECURITY](SECURITY.md) | [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
+By contributing, you agree your changes are licensed under MIT.

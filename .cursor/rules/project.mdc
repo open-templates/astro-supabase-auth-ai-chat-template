@@ -1,0 +1,18 @@
+---
+description: astro-supabase-auth-ai-chat-template conventions and onboarding for agents
+alwaysApply: true
+---
+
+# astro-supabase-auth-ai-chat-template
+
+Read **`INSTRUCTIONS.md`** first — Supabase project, Google Cloud OAuth app, Supabase Google provider, redirect URLs, and `.env` are required before the app works in production.
+
+- Feature contract: `index.md`
+- Agent skills: `.agents/skills/README.md`
+- Routes: `/`, `/chat`, `/login`, `/signup`, `/recover-password`, `/reset-password`
+- API client: `src/vue/api/api.ts` (`apiFetch`) → worker at `VITE_API_BASE_URL`
+- Vue SPA entry: `src/vue/main.ts` via `src/pages/index.astro`
+
+Auth is Supabase-only on the client; domain API calls go to the worker, not `supabase.from()` for app data.
+
+Pairing backend (not in this repo): [cf-hono-supabase-gemini-api-template](https://github.com/open-templates/cf-hono-supabase-gemini-api-template) — same Supabase project; worker `ALLOWED_ORIGINS` must include this app's origin.

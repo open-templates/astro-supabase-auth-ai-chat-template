@@ -1,37 +1,29 @@
-# github-repo-template — Agent Skills Index
+# astro-supabase-auth-ai-chat-template — Agent Skills Index
 
-OKF module guides and Cursor skill packs for this stack-agnostic repository shell.
+Skills in `.agents/skills/` teach agents how this repository works and how to extend it safely.
 
-## OKF layers
+## Project status (current template)
 
-| Layer | Path |
-|-------|------|
-| Feature contracts | [`index.md`](../../index.md) (repo root) |
-| OKF skills index | [`index.md`](index.md) |
-| Shared concepts | [`shared/`](shared/) (synced from workspace `.agents/skills/`) |
-| Local modules | [`modules/`](modules/) |
+**Astro 7** shell with a **Vue 3 chat SPA** (`src/vue/`, `client:only`), **Supabase Auth**, paired with **cf-hono-supabase-gemini-api-template**:
 
-## Local modules (OKF)
+- **Auth:** Google OAuth + email/password (Vue composables under `src/vue/`)
+- **API calls:** `GET /health` (header), `GET /me` (home), `POST /chat` (chat) via `apiFetch`
+- **Routes:** `/`, `/chat`, `/login`, `/signup`, `/recover-password`, `/reset-password`
+- **Chat:** multi-turn threads in `sessionStorage`; assistant replies rendered with `markdown-it`
+
+Canonical OKF specs: [`index.md`](../../index.md) · OKF modules: [`.agents/skills/index.md`](index.md)
+
+## OKF modules (local)
 
 | Module | Use when |
 |--------|----------|
-| [init-from-template](modules/init-from-template.md) | Running `./scripts/init-from-template.sh` or extending the init manifest |
+| [api-fetch](modules/api-fetch.md) | `apiFetch` with Bearer token and 401 retry |
+| [chat-page](modules/chat-page.md) | Chat view send flow and UI state |
+| [chat-threads](modules/chat-threads.md) | `sessionStorage` thread list and cleanup on sign-out |
+| [chat-markdown](modules/chat-markdown.md) | `markdown-it` for assistant bubbles |
 
-## Shared concepts (synced)
+Shared concepts (synced): [shared/auth/](shared/auth/) · [shared/supabase/](shared/supabase/)
 
-Optional cross-template references — useful when this repo later gains a stack:
+## Agent read order
 
-* [auth/shared/](shared/auth/) — session, JWT, route guards
-* [supabase/shared/](shared/supabase/) — OAuth setup, worker clients
-
-## Cursor SKILL.md packs
-
-None shipped by default for this shell template. Add `.agents/skills/<pack>/SKILL.md` when you adopt a stack, then list it here.
-
-## Extension order
-
-1. Read **`INSTRUCTIONS.md`** and **`index.md`**
-2. Run init from `templates/` when personalizing
-3. Add application code for your stack
-4. Document features in `specs/features/` and link from root `index.md`
-5. Add `.agents/skills/modules/` guides for non-obvious patterns
+1. `INSTRUCTIONS.md` → `index.md` → this file → `shared/auth/`

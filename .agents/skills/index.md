@@ -2,19 +2,23 @@
 okf_version: "0.1"
 ---
 
-# github-repo-template skills
+# astro-supabase-auth-ai-chat-template skills
 
 ## Shared (synced)
 
-Optional cross-template references: [auth/](shared/auth/), [supabase/](shared/supabase/)
+* [auth/](shared/auth/)
+* [supabase/](shared/supabase/)
 
 ## Local modules
 
-* [init-from-template](modules/init-from-template.md) - personalization script
+* [api-fetch](modules/api-fetch.md) - same pattern as auth SPA
+* [chat-page](modules/chat-page.md) - chat view send flow
+* [chat-threads](modules/chat-threads.md) - sessionStorage threads
+* [chat-markdown](modules/chat-markdown.md) - markdown assistant bubbles
 
 ## Agent skills
 
-Cursor catalog: [README.md](README.md) — procedural guides (add `SKILL.md` packs when you adopt a stack).
+Framework guidance: [README.md](README.md)
 
 ## Specs
 

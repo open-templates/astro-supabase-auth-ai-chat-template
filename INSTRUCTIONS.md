@@ -1,176 +1,175 @@
-# Instructions — github-repo-template
+# Agent & developer instructions — astro-supabase-auth-ai-chat-template
 
-Guide for maintainers and coding agents after creating a repository from this template.
+Use this file when turning this template into a **production SPA** with Supabase Auth and a Cloudflare Worker backend. This repository is **self-contained** for the UI and client-side auth; API calls require a separate worker (this template pairs with [cf-hono-supabase-gemini-api-template](https://github.com/open-templates/cf-hono-supabase-gemini-api-template) as the demo backend).
 
-## What this template is
+## What ships out of the box
 
-A **blank GitHub repository shell**: documentation, Dependabot, CODEOWNERS, and one optional workflow to sign Dependabot commits. It is **not** tied to React, Node, Python, or any other stack until you add that code.
+| Feature | Description |
+|---------|-------------|
+| Google OAuth | Sign in / sign up via Supabase |
+| Email auth | Login, signup, password recovery & reset |
+| API health indicator | Header polls `GET /health` |
+| **Home (`/`)** | `GET /me` JWT verification and session debug |
+| **AI chat (`/chat`)** | Chat UI → `POST /chat` with Bearer JWT |
 
-### Included automation (only these)
-
-| Asset | Role |
-|-------|------|
-| `.github/dependabot.yml` | Opens dependency update PRs on a schedule |
-| `.github/workflows/dependabot-signature.yml` | Amends Dependabot commits with `Co-authored-by` |
-| `.github/CODEOWNERS` | Requests reviews from listed owners |
-
-Add your own CI (build, test, lint, deploy) when the project has a stack.
-
-Workflow and template details live under **[docs/README.md](docs/README.md)** (issue forms, PR template, dependabot-signature workflow).
-
-### Included markdown (GitHub UI)
-
-Root-level `.md` files are meant to be read on github.com. Each ends with a **Repository documents** footer: sibling files as horizontal links separated by ` | ` (the current page is plain text).
-
-| File | When to read |
-|------|----------------|
-| [README.md](README.md) | First visit — scope and quick start |
-| [docs/README.md](docs/README.md) | Workflows and GitHub issue/PR templates |
-| **INSTRUCTIONS.md** | Fork setup, releases, CHANGELOG automation |
-| [CHANGELOG.md](CHANGELOG.md) | Published version history |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | External contributors |
-| [SECURITY.md](SECURITY.md) | Security reports |
-| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Community rules |
+Details: [`index.md`](index.md)
 
 ---
 
-## First steps after “Use this template”
+## Prerequisites (required before development)
 
-1. **Initialize** — `./scripts/init-from-template.sh` copies `templates/` → root (see [docs/init-from-template.md](docs/init-from-template.md)). Root keeps @open-templates branding until then.
-2. **Dependabot** — Edit `.github/dependabot.yml` for your stack; uncomment assignees if needed.
-3. **Dependabot signer** — Uses `github.repository_owner` at runtime.
-4. **Secrets** — Never commit `.env`; use `.env.example` only.
+### 0. Local toolchain
+
+- **Node.js ≥ 22.12** (required by Astro 7)
+- **Bun** (recommended; see `packageManager` in `package.json`)
+
+### 1. Supabase project
+
+1. Create a project at [supabase.com](https://supabase.com).
+2. **Settings → API** — copy:
+   - **Project URL** → `VITE_SUPABASE_URL`
+   - **anon / publishable key** → `VITE_SUPABASE_PUBLISHABLE_KEY`
+3. **Authentication → Providers → Email** — enable (default).
+
+### 2. Google Cloud OAuth application (required for Google sign-in)
+
+1. Open [Google Cloud Console](https://console.cloud.google.com) → **APIs & Services**.
+2. **OAuth consent screen** — configure (External), scopes: `email`, `profile`.
+3. **Credentials → Create OAuth client ID** — type **Web application**.
+4. **Authorized redirect URIs** — add exactly:
+   ```
+   https://<your-project-ref>.supabase.co/auth/v1/callback
+   ```
+   Find `<your-project-ref>` in your Supabase project URL.
+5. Copy **Client ID** and **Client secret**.
+
+### 3. Integrate Google with Supabase
+
+1. Supabase dashboard → **Authentication → Providers → Google**.
+2. Enable Google, paste Client ID and Client secret, save.
+
+### 4. Supabase URL configuration
+
+**Authentication → URL Configuration**:
+
+| Setting | Local dev | Production |
+|---------|-----------|------------|
+| Site URL | `http://localhost:4321` | `https://your-app.pages.dev` |
+| Redirect URLs | `http://localhost:4321` | `https://your-app.pages.dev` |
+
+Add every origin you use (no trailing slash mismatches).
+
+Step-by-step UI guide: [`docs/SUPABASE_SETUP.md`](docs/SUPABASE_SETUP.md)
 
 ---
 
-## CHANGELOG: feature-based batches from commit history
-
-[CHANGELOG.md](CHANGELOG.md) follows [Keep a Changelog](https://keepachangelog.com/). Maintain it in **batches per release** (or per merged feature group), not one line per commit.
-
-### 1. Use conventional commits
-
-Train contributors (see [CONTRIBUTING.md](CONTRIBUTING.md)) to write messages that map to changelog sections:
-
-| Prefix | CHANGELOG section |
-|--------|-------------------|
-| `feat:` | Added |
-| `fix:` | Fixed |
-| `docs:` | (usually omit or “Documentation”) |
-| `chore:` / `ci:` | (usually omit unless user-visible) |
-| `refactor:` | Changed |
-| `perf:` | Changed |
-| `BREAKING CHANGE:` or `!` | Changed — breaking |
-
-**Feature-based batching:** Squash or group PRs so one feature = one `feat:` (or one PR with a clear title). Release notes stay readable.
-
-Example batch for version `0.2.0`:
-
-```text
-feat(auth): add Google OAuth login
-feat(api): add GET /me endpoint
-fix(cors): allow local dev origin
-```
-
-Becomes one CHANGELOG block:
-
-```markdown
-## [0.2.0] - 2026-07-04
-
-### Added
-- Google OAuth login
-- `GET /me` API endpoint
-
-### Fixed
-- CORS for local development origin
-```
-
-### 2. Generate a draft from git (manual or scripted)
-
-Between tags `v0.1.0` and `HEAD`, list commits and group by type:
+## Setup checklist
 
 ```bash
-git log v0.1.0..HEAD --pretty=format:"%s" --no-merges
+bun install
+cp .env.example .env
 ```
 
-Filter lines starting with `feat:`, `fix:`, etc., strip the prefix for bullet text, and paste under the right `###` heading in `CHANGELOG.md`.
+`.env`:
 
-Optional tools (add when you adopt a stack):
+```bash
+VITE_SUPABASE_URL=https://<ref>.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=<anon-key>
+VITE_API_BASE_URL=http://localhost:8787
+```
 
-- **[git-cliff](https://git-cliff.org/)** — `git cliff --tag v0.2.0` from conventional commits
-- **[conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)** — npm CLI
-- **GitHub Release** — Generate release notes from PR titles when merging to `main`
+```bash
+bun run dev   # http://localhost:4321
+```
 
-### 3. Release workflow (recommended)
+Test:
 
-1. Merge feature PRs to `main` using conventional titles.
-2. When ready to release, choose a version ([SemVer](https://semver.org/)).
-3. Run `git log <last-tag>..HEAD` (or git-cliff) and update `CHANGELOG.md` under `## [x.y.z] - YYYY-MM-DD`.
-4. Commit: `docs: release v0.2.0` (or include changelog in the release PR).
-5. Tag: `git tag v0.2.0 && git push origin v0.2.0`.
-6. Create a GitHub Release from the tag; paste the same section from `CHANGELOG.md`.
-
-### 4. Optional: automate later
-
-This template does **not** ship a CHANGELOG GitHub Action. When you add CI, common choices:
-
-- **release-please** — Opens release PRs with updated CHANGELOG from conventional commits
-- **git-cliff-action** — Updates `CHANGELOG.md` on tag or manual dispatch
-- **changesets** — Monorepo-friendly; human-written change summaries batched per package
-
-Start manual; automate once commit discipline is stable.
+1. Open `/login` — header should show API status (requires worker; see below).
+2. Sign in with Google or email.
+3. On `/` — session card + **Profile (API /me)** JSON.
+4. On `/chat` — send a message (requires worker with `GEMINI_API_KEY`).
 
 ---
 
-## Dependabot workflow
+## Connecting the backend (missing piece for API calls)
 
-1. Dependabot opens PRs per `.github/dependabot.yml`.
-2. `dependabot-signature.yml` runs on `pull_request_target` and amends the commit message with `Co-authored-by`.
-3. CODEOWNERS on `.github/workflows/*` requests your review on workflow changes.
+This frontend does **not** include the API worker. For `/health`, `/me`, and `/chat`:
 
-Review dependency PRs like any other: changelog entry only if the upgrade is user-visible (e.g. security fix in `SECURITY.md` advisory, not every patch bump).
+1. Clone or fork **[cf-hono-supabase-gemini-api-template](https://github.com/open-templates/cf-hono-supabase-gemini-api-template)**.
+2. Complete **its** `INSTRUCTIONS.md` (same Supabase project credentials in worker `.dev.vars`; set `GEMINI_API_KEY` for chat).
+3. Start worker: `npm run dev` (port `8787`).
+4. Set worker `ALLOWED_ORIGINS=http://localhost:4321` (and production URL when deployed).
+5. Deploy worker to Cloudflare; set `VITE_API_BASE_URL` to the worker URL in production.
 
----
+Use the **same Supabase project** for both templates so JWTs issued to the browser are valid on the worker.
 
-## Agent checklist
-
-When extending a repo created from this template:
-
-1. Read **`INSTRUCTIONS.md`** (this file) and [`index.md`](index.md)
-2. Read **`.agents/skills/index.md`** and **`.agents/skills/README.md`**
-3. Run `./scripts/init-from-template.sh` to copy `templates/` into the repo root
-4. Do not commit secrets; respect `.gitignore`
-5. Use conventional commits for features/fixes destined for CHANGELOG
-6. Update [CHANGELOG.md](CHANGELOG.md) when cutting a release batch
-7. Add numbered concepts under `specs/features/` when adding user-visible behavior
-8. Add new automation in `.github/workflows/` and document it in README
+Test chat: sign in → `/chat` → send a message (requires worker with Gemini configured).
 
 ---
 
-## Agent workflow (OKF)
+## Agent workflow (extending to production)
 
-| Step | File |
-|------|------|
-| 1 | `INSTRUCTIONS.md` — setup and governance |
-| 2 | `index.md` — feature contract index |
-| 3 | `.agents/skills/index.md` — module recreation guides |
-| 4 | `.agents/skills/README.md` — Cursor skill catalog |
+Read in order:
 
-Workspace convention: [open-templates specs OKF agent workflow](https://github.com/open-templates/specs/blob/main/concepts/okf-agent-workflow.md)
+1. **`INSTRUCTIONS.md`** (this file) — OAuth + env setup
+2. **`index.md`** — routes and API contract
+3. **`.agents/skills/index.md`** — OKF module guides
+4. **`.agents/skills/README.md`** — Cursor `SKILL.md` catalog
+
+### Adding a feature page
+
+1. **Backend route** in cf-hono template (if new API) — document in both `index.md` files
+2. **API module**: `src/vue/api/<feature>.ts` using `apiFetch` — see `api-fetch` skill
+3. **View**: `src/vue/views/` + route in `src/vue/router/index.ts` with `meta.requireAuth`
+4. **Specs**: add or update `specs/features/` and link from `index.md`
+
+### Rules
+
+- Auth stays on Supabase client; domain data goes through the worker (`VITE_API_BASE_URL`).
+- Never put service role keys in `VITE_*` variables.
+- Token for API: `localStorage['x-auth-token']` (managed by `useAuth`).
+- `signOut()` must call `clearAllChatState()` when chat is enabled.
+- Run `bun run typecheck` before finishing.
 
 ---
 
 ## Repository map
 
 ```
-index.md              OKF bundle root
-specs/features/       Numbered out-of-the-box specs
-.agents/skills/       OKF modules + Cursor SKILL.md packs
-templates/            Adopter files (init copies to root)
-docs/                 GitHub workflow reference
+src/pages/          index.astro (mounts Vue SPA)
+src/vue/            App, router, views, components, api, lib
+src/vue/views/      HomeView, ChatView, auth views
+src/vue/api/        apiFetch, health, me, chat
+src/vue/lib/        chat-threads.ts (cleared on sign-out)
+index.md            OKF bundle root
+specs/features/     Numbered feature specs
+.agents/skills/     OKF modules + Cursor SKILL.md packs
+.cursor/rules/      Cursor IDE rules
+docs/               Supabase setup guide
 ```
 
 ---
 
-## Repository documents
+## Deployment (Cloudflare Pages)
 
-[README](README.md) | **INSTRUCTIONS** | [CHANGELOG](CHANGELOG.md) | [CONTRIBUTING](CONTRIBUTING.md) | [SECURITY](SECURITY.md) | [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md)
+- Build: `bun run build`
+- Output: `dist`
+- Env vars: same `VITE_*` as `.env`
+- Update Supabase redirect URLs to Pages domain
+
+---
+
+## Troubleshooting
+
+| Issue | Check |
+|-------|--------|
+| Google OAuth redirect error | Redirect URI in Google = `https://<ref>.supabase.co/auth/v1/callback`; Site URL matches app origin |
+| API offline in header | Worker running; `VITE_API_BASE_URL` correct |
+| `/me` fails after login | Same Supabase project on worker; CORS `ALLOWED_ORIGINS` |
+| Chat returns 500/502 | Worker has `GEMINI_API_KEY`; check worker logs |
+
+---
+
+## License
+
+MIT — see `LICENSE`.
