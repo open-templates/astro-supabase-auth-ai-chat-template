@@ -46,7 +46,7 @@
   "packageManager": "bun@1.2.15",
   "dependencies": {
     "@iconify/vue": "^5.0.0",
-    "@supabase/supabase-js": "^2.110.0",
+    "@supabase/supabase-js": "^2.110.7",
     "astro": "^7.1.0",
     "clsx": "^2.1.1",
     "dompurify": "^3.2.6",
